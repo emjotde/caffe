@@ -1,0 +1,48 @@
+name: "Iris"
+layers {
+    name: "data"
+    type: HDF5_DATA
+    top: "data"
+    top: "label"
+    hdf5_data_param {
+        source: "examples/iris/iris.h5.train.txt"
+        batch_size: 30
+    }
+    include: { phase: TRAIN }
+}
+layers {
+    name: "data"
+    type: HDF5_DATA
+    top: "data"
+    top: "label"
+    hdf5_data_param {
+        source: "examples/iris/iris.h5.test.txt"
+        batch_size: 30
+    }
+    include: { phase: TEST }
+}
+layers {
+    name: "ip"
+    type: INNER_PRODUCT
+    bottom: "data"
+    top: "ip"
+    inner_product_param {
+        num_output: 3
+    }
+}
+layers {
+    name: "loss"
+    type: SOFTMAX_LOSS
+    bottom: "ip"
+    bottom: "label"
+    top: "loss"
+  include: { phase: TRAIN }
+}
+layers {
+  name: "accuracy"
+  type: ACCURACY
+  bottom: "ip"
+  bottom: "label"
+  top: "accuracy"
+  include: { phase: TEST }
+}
