@@ -1,0 +1,24 @@
+name: "Iris"
+input: "data"
+
+input_dim: 30
+input_dim: 4
+input_dim: 1
+input_dim: 1
+
+layers {
+    name: "ip"
+    type: INNER_PRODUCT
+    bottom: "data"
+    top: "ip"
+    inner_product_param {
+        num_output: 3
+    }
+}
+
+layers {
+    name: "loss"
+    type: SOFTMAX
+    bottom: "ip"
+    top: "loss"
+}
