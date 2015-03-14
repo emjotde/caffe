@@ -28,7 +28,7 @@ def main():
     vec_size = max(vec_size, args.vector_size)
     debug("number of features: {}".format(vec_size))
 
-    batches = max(len(data) / args.batch_size, 1)
+    batches = (len(data) / args.batch_size) + 1
     debug("number of batches: {}".format(batches))
 
     debug("number of threads: {}".format(args.threads))
@@ -40,6 +40,7 @@ def main():
         hdf5_file = "{0}.{1:03d}".format(os.path.abspath(args.output), batch)
         print hdf5_file
 
+        debug("split data from {} to {}".format(n, m))
         jobs.append(delayed(save_data_to_hdf5)(hdf5_file, data[n:m], labels[n:m], vec_size))
 
     Parallel(n_jobs=args.threads, verbose=DEBUG)(jobs)
